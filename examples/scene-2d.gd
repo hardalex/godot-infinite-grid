@@ -40,19 +40,6 @@ func _input(event: InputEvent) -> void:
       _zoom_at(get_viewport().get_mouse_position(), pow(PAN_ZOOM_BASE, -zoom_steps))
 
 
-func _draw() -> void:
-  var font := ThemeDB.fallback_font
-  draw_line(Vector2(-1000.0, 0.0), Vector2(1000.0, 0.0), Color(0.85, 0.20, 0.20, 0.95), 4.0, true)
-  draw_line(Vector2(0.0, -1000.0), Vector2(0.0, 1000.0), Color(0.20, 0.55, 0.95, 0.95), 4.0, true)
-  draw_circle(Vector2.ZERO, 5.0, Color.WHITE)
-
-  for index in range(8):
-    var angle := TAU * float(index) / 8.0
-    var position := Vector2(cos(angle), sin(angle)) * 120.0
-    draw_circle(position, 14.0, Color(1.0, 0.78, 0.20, 0.95))
-    draw_string(font, position + Vector2(20.0, 4.0), "P%d" % index, HORIZONTAL_ALIGNMENT_LEFT, -1, 16)
-
-
 func _zoom_at(screen_pos: Vector2, factor: float) -> void:
   var pre_zoom := _camera.zoom
   var next_zoom := clampf(_camera.zoom.x * factor, MIN_ZOOM, MAX_ZOOM)
