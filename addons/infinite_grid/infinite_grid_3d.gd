@@ -1,11 +1,11 @@
 extends MeshInstance3D
-## EndlessGrid3D: procedurally built 6-vertex shader grid.
+## InfiniteGrid3D: procedurally built 6-vertex shader grid.
 ##
 ## Creates only an XZ plane from two triangles. Grid lines and fading are computed
 ## in the shader, and the LOD distance is driven by the camera state.
-## By default it follows the current viewport camera on XZ to create an endless grid.
+## By default it follows the current viewport camera on XZ to create an infinite grid.
 
-const GRID_SHADER := preload("res://addons/endless_grid/endless_grid_3d.gdshader")
+const GRID_SHADER := preload("res://addons/infinite_grid/infinite_grid_3d.gdshader")
 
 @export var follow_viewport_camera := true
 @export var grid_size := 2000.0

@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="godot-endless-grid"
+config/name="godot-infinite-grid"
 run/main_scene="res://examples/scene-3d.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 

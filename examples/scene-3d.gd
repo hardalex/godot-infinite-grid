@@ -1,5 +1,5 @@
 extends Node3D
-## Endless grid example scene with the shared free camera.
+## Infinite grid example scene with the shared free camera.
 
 const DESIGN_WIDTH := 1280
 const DESIGN_HEIGHT := 720
