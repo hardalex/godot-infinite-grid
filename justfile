@@ -1,0 +1,105 @@
+# Godot Debug Draw - tool installation and common commands
+#
+# Initialization (first use):
+#   cargo install just  # install just itself if needed
+#   just init           # initialize tools and hooks
+
+# --------------------------------------------------
+# Tool installation
+# --------------------------------------------------
+
+# Initialize tools: check and install missing tools, then enable the commit hook
+init:
+  @command -v cog >/dev/null 2>&1 || cargo install cocogitto
+  @command -v gdscript-formatter >/dev/null 2>&1 || cargo install --git https://github.com/GDQuest/GDScript-formatter
+  @if [ -d .git ]; then \
+    git config core.hooksPath .githooks; \
+    echo "✓ Git hooks enabled"; \
+  else \
+    echo "! .git not found, skipping Git hooks setup"; \
+  fi
+  @echo "✓ Initialization complete"
+
+# Update installed tools to the latest versions
+upgrade:
+  cargo install cocogitto --force
+  cargo install --git https://github.com/GDQuest/GDScript-formatter --force
+
+# --------------------------------------------------
+# Tests
+# --------------------------------------------------
+
+# Run gdUnit4 tests (no args = all tests, with args = selected test file)
+test *test_file='':
+  @if [ ! -x addons/gdUnit4/runtest.sh ]; then \
+    echo "! addons/gdUnit4/runtest.sh not found, skipping tests"; \
+  elif [ "{{test_file}}" = "" ]; then \
+    GODOT_BIN=$(which godot) bash addons/gdUnit4/runtest.sh --add tests/; \
+  else \
+    GODOT_BIN=$(which godot) bash addons/gdUnit4/runtest.sh --add "{{test_file}}"; \
+  fi
+
+# Same as above, but in headless mode for CI
+test-headless *test_file='':
+  @if [ ! -x addons/gdUnit4/runtest.sh ]; then \
+    echo "! addons/gdUnit4/runtest.sh not found, skipping tests"; \
+  elif [ "{{test_file}}" = "" ]; then \
+    GODOT_BIN=$(which godot) bash addons/gdUnit4/runtest.sh --headless --ignoreHeadlessMode --add tests/; \
+  else \
+    GODOT_BIN=$(which godot) bash addons/gdUnit4/runtest.sh --headless --ignoreHeadlessMode --add "{{test_file}}"; \
+  fi
+
+# --------------------------------------------------
+# Code checks
+# --------------------------------------------------
+
+# Check formatting only (no args = whole project, with args = selected files)
+check-fmt *files='':
+  @if [ "{{files}}" = "" ]; then \
+    _gd=$(find . -name "*.gd" -not -path "./addons/*" -not -path "./.godot/*"); \
+    if [ -z "$_gd" ]; then echo "! No GDScript files found, skipping format check"; else echo "$_gd" | xargs gdscript-formatter --use-spaces --indent-size 2 --reorder-code --check; fi; \
+  else \
+    gdscript-formatter --use-spaces --indent-size 2 --reorder-code {{files}}; \
+  fi
+
+# Format code (no args = whole project, with args = selected files)
+fmt *files='':
+  @if [ "{{files}}" = "" ]; then \
+    _gd=$(find . -name "*.gd" -not -path "./addons/*" -not -path "./.godot/*"); \
+    if [ -z "$_gd" ]; then echo "! No GDScript files found, skipping formatting"; else echo "$_gd" | xargs gdscript-formatter --use-spaces --indent-size 2 --reorder-code; fi; \
+  else \
+    gdscript-formatter --use-spaces --indent-size 2 --reorder-code {{files}}; \
+  fi
+
+# Lint code (no args = whole project, with args = selected files)
+lint *files='':
+  @if [ "{{files}}" = "" ]; then \
+    _gd=$(find . -name "*.gd" -not -path "./addons/*" -not -path "./.godot/*"); \
+    if [ -z "$_gd" ]; then echo "! No GDScript files found, skipping lint"; else echo "$_gd" | xargs gdscript-formatter lint --disable max-line-length; fi; \
+  else \
+    gdscript-formatter lint --disable max-line-length {{files}}; \
+  fi
+
+# Run all checks (no args = whole project, with args = selected files)
+check *files='':
+  @set -e; \
+  if [ "{{files}}" = "" ]; then \
+    _gd=$(find . -name "*.gd" -not -path "./addons/*" -not -path "./.godot/*"); \
+    if [ -z "$_gd" ]; then \
+      echo "! No GDScript files found, skipping checks"; \
+    else \
+      echo "$_gd" | xargs gdscript-formatter --use-spaces --indent-size 2 --reorder-code --check; \
+      echo "$_gd" | xargs gdscript-formatter lint --disable max-line-length; \
+    fi; \
+  else \
+    gdscript-formatter --use-spaces --indent-size 2 --reorder-code --check {{files}}; \
+    gdscript-formatter lint --disable max-line-length {{files}}; \
+  fi
+
+# Validate commit messages (no args = since latest tag, with args = selected message)
+lint-commit msg='':
+  @if [ "{{msg}}" = "" ]; then \
+    cog check --from-latest-tag --ignore-merge-commits; \
+  else \
+    cog verify "{{msg}}"; \
+  fi
