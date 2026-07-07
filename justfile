@@ -103,3 +103,28 @@ lint-commit msg='':
   else \
     cog verify "{{msg}}"; \
   fi
+
+# --------------------------------------------------
+# Release
+# --------------------------------------------------
+
+# Create and publish a GitHub release from an annotated tag, e.g. `just release v1.0.0`
+release version:
+  @set -e; \
+  if [ -n "$$(git status --porcelain)" ]; then \
+    echo "! Working tree is not clean" >&2; \
+    exit 1; \
+  fi; \
+  command -v gh >/dev/null 2>&1 || { echo "! gh is required to create a GitHub release" >&2; exit 1; }; \
+  case "{{version}}" in \
+    v[0-9]*.[0-9]*.[0-9]*) ;; \
+    *) echo "! Version must look like v1.0.0" >&2; exit 1 ;; \
+  esac; \
+  if git rev-parse -q --verify "refs/tags/{{version}}" >/dev/null; then \
+    echo "! Tag {{version}} already exists" >&2; \
+    exit 1; \
+  fi; \
+  just check; \
+  git tag -a "{{version}}" -m "Release {{version}}"; \
+  git push origin "{{version}}"; \
+  gh release create "{{version}}" --title "{{version}}" --generate-notes
