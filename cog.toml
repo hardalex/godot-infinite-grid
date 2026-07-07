@@ -1,4 +1,4 @@
-# Cocogitto configuration for godot-debug-draw
+# Cocogitto configuration for godot-infinite-grid
 # Conventional Commits validation and automatic changelog
 
 from_latest_tag = false
@@ -19,6 +19,8 @@ scopes = [
     "script",
     "asset",
     "addon",
+    "grid",
+    "examples",
     "physics",
     "render",
     "ui",

@@ -105,13 +105,33 @@ lint-commit msg='':
   fi
 
 # --------------------------------------------------
+# Changelog
+# --------------------------------------------------
+
+# Generate CHANGELOG.md from conventional commits
+changelog:
+  @set -e; \
+  command -v cog >/dev/null 2>&1 || { echo "! cog is required to generate the changelog" >&2; exit 1; }; \
+  tmp=$(mktemp); \
+  err="${tmp}.err"; \
+  printf "# Changelog\n\n" > "${tmp}"; \
+  cog changelog 2> "${err}" >> "${tmp}"; \
+  mv "${tmp}" CHANGELOG.md; \
+  if [ -s "${err}" ]; then \
+    echo "! Some commits were skipped by cocogitto:" >&2; \
+    cat "${err}" >&2; \
+  fi; \
+  rm -f "${err}"; \
+  echo "✓ CHANGELOG.md updated"
+
+# --------------------------------------------------
 # Release
 # --------------------------------------------------
 
 # Create and publish a GitHub release from an annotated tag, e.g. `just release v1.0.0`
 release version:
   @set -e; \
-  if [ -n "$$(git status --porcelain)" ]; then \
+  if [ -n "$(git status --porcelain)" ]; then \
     echo "! Working tree is not clean" >&2; \
     exit 1; \
   fi; \
