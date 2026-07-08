@@ -20,8 +20,8 @@ const GRID_SHADER := preload("res://addons/infinite_grid/infinite_grid_3d.gdshad
     if _shader_material != null:
       _shader_material.set_shader_parameter("debug_lod_colors", debug_lod_colors)
 @export var enable_grazing_opacity := true
-@export var thin_line_color := Color(0.42, 0.42, 0.42, 0.45)
-@export var thick_line_color := Color(0.62, 0.62, 0.62, 0.65)
+@export var thin_line_color := Color(9.62615e-07, 0.521708, 0.04350812, 0.5019608)
+@export var thick_line_color := Color(0.45882353, 1.0, 0.45882353, 0.7019608)
 
 var _shader_material: ShaderMaterial
 

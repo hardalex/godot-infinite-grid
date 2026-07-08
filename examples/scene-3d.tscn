@@ -17,8 +17,6 @@ transform = Transform3D(0.70710677, -0.35355338, 0.61237246, 0, 0.8660254, 0.5, 
 light_energy = 0.6
 
 [node name="InfiniteGrid3D" parent="." unique_id=605528562 instance=ExtResource("3")]
-thin_line_color = Color(0.33847278, 0.33847293, 0.33847287, 0.5019608)
-thick_line_color = Color(0.46034712, 0.46034718, 0.460347, 0.7019608)
 
 [node name="Logo" type="Sprite3D" parent="." unique_id=1773538734]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 1, 0)

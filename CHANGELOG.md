@@ -14,5 +14,3 @@
 - (**scene**) add endless grid example - (172e9fa)
 #### Documentation
 - add readme and mit license - (715fa57)
-
-
