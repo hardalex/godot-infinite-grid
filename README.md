@@ -4,7 +4,16 @@ Reusable infinite grid components for Godot 4.x.
 
 This repository is the development project for the `infinite_grid` addon. The addon provides shader-driven 2D and 3D grids that keep line widths stable in screen space, fade between LOD levels, and follow the active camera so the grid appears endless without generating large geometry.
 
-## Addon documentation
+## Features
+
+- `InfiniteGrid3D` for editor-style ground grids in 3D scenes.
+- `InfiniteGrid2D` for full-viewport grids in `Camera2D` scenes.
+- Screen-space line width and anti-aliasing.
+- Smooth decimal LOD transitions.
+- Configurable cell size, colors, opacity, and debug LOD colors.
+- No external runtime dependencies.
+
+## Getting started
 
 For installation, usage, and exported properties, see the addon README:
 
@@ -14,10 +23,6 @@ For installation, usage, and exported properties, see the addon README:
 
 - `examples/scene-3d.tscn`: shows `InfiniteGrid3D` in a 3D scene with an editor-style free camera.
 - `examples/scene-2d.tscn`: shows `InfiniteGrid2D` in a 2D camera scene with pan and zoom controls.
-
-## Release package
-
-GitHub release assets contain only `addons/infinite_grid/`. The repository examples are for development and are not included in the addon ZIP.
 
 ## Development
 

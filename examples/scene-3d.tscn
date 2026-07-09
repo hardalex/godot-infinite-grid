@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://c4rxs8nogt86v"]
 
-[ext_resource type="Script" path="res://examples/scene-3d.gd" id="1"]
+[ext_resource type="Script" uid="uid://yovccmavd02s" path="res://examples/scene-3d.gd" id="1"]
 [ext_resource type="PackedScene" path="res://examples/free_camera.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://addons/infinite_grid/infinite_grid_3d.tscn" id="3"]
-[ext_resource type="Texture2D" path="res://examples/logo-128.svg" id="4_aqquj"]
+[ext_resource type="Texture2D" uid="uid://b3a01134n5mrn" path="res://examples/logo-128.svg" id="4_aqquj"]
 
 [node name="InfiniteGridExample" type="Node3D" unique_id=1738472960]
 script = ExtResource("1")

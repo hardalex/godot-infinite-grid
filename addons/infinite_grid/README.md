@@ -34,6 +34,12 @@ Instance one of the reusable scenes in your project:
 - `res://addons/infinite_grid/infinite_grid_3d.tscn`
 - `res://addons/infinite_grid/infinite_grid_2d.tscn`
 
+## Examples
+
+Example scenes are maintained in the repository `examples/` folder. View them on GitHub:
+
+- https://github.com/hardalex/godot-infinite-grid/tree/main/examples
+
 ## InfiniteGrid3D
 
 ### Usage
