@@ -148,7 +148,7 @@ release version:
   just check; \
   tmpdir=$(mktemp -d); \
   trap 'rm -rf "${tmpdir}"' EXIT; \
-  asset="${tmpdir}/infinite_grid-{{version}}.zip"; \
+  asset="${tmpdir}/infinite-grid-{{version}}.zip"; \
   git archive --format=zip --prefix=addons/infinite_grid/ --output "${asset}" HEAD:addons/infinite_grid; \
   invalid=$(unzip -Z1 "${asset}" | grep -v '^addons/infinite_grid/' || true); \
   if [ -n "${invalid}" ]; then \
