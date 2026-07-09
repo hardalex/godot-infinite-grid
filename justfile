@@ -56,7 +56,7 @@ test-headless *test_file='':
 # Check formatting only (no args = whole project, with args = selected files)
 check-fmt *files='':
   @if [ "{{files}}" = "" ]; then \
-    _gd=$(find . -name "*.gd" -not -path "./addons/*" -not -path "./.godot/*"); \
+    _gd=$(find . -name "*.gd" -not -path "./.godot/*" -not -path "./addons/gdUnit4/*"); \
     if [ -z "$_gd" ]; then echo "! No GDScript files found, skipping format check"; else echo "$_gd" | xargs gdscript-formatter --use-spaces --indent-size 2 --reorder-code --check; fi; \
   else \
     gdscript-formatter --use-spaces --indent-size 2 --reorder-code {{files}}; \
@@ -65,7 +65,7 @@ check-fmt *files='':
 # Format code (no args = whole project, with args = selected files)
 fmt *files='':
   @if [ "{{files}}" = "" ]; then \
-    _gd=$(find . -name "*.gd" -not -path "./addons/*" -not -path "./.godot/*"); \
+    _gd=$(find . -name "*.gd" -not -path "./.godot/*" -not -path "./addons/gdUnit4/*"); \
     if [ -z "$_gd" ]; then echo "! No GDScript files found, skipping formatting"; else echo "$_gd" | xargs gdscript-formatter --use-spaces --indent-size 2 --reorder-code; fi; \
   else \
     gdscript-formatter --use-spaces --indent-size 2 --reorder-code {{files}}; \
@@ -74,7 +74,7 @@ fmt *files='':
 # Lint code (no args = whole project, with args = selected files)
 lint *files='':
   @if [ "{{files}}" = "" ]; then \
-    _gd=$(find . -name "*.gd" -not -path "./addons/*" -not -path "./.godot/*"); \
+    _gd=$(find . -name "*.gd" -not -path "./.godot/*" -not -path "./addons/gdUnit4/*"); \
     if [ -z "$_gd" ]; then echo "! No GDScript files found, skipping lint"; else echo "$_gd" | xargs gdscript-formatter lint --disable max-line-length; fi; \
   else \
     gdscript-formatter lint --disable max-line-length {{files}}; \
@@ -84,7 +84,7 @@ lint *files='':
 check *files='':
   @set -e; \
   if [ "{{files}}" = "" ]; then \
-    _gd=$(find . -name "*.gd" -not -path "./addons/*" -not -path "./.godot/*"); \
+    _gd=$(find . -name "*.gd" -not -path "./.godot/*" -not -path "./addons/gdUnit4/*"); \
     if [ -z "$_gd" ]; then \
       echo "! No GDScript files found, skipping checks"; \
     else \

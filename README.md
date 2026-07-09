@@ -22,8 +22,8 @@ Common commands:
 
 ```bash
 just test              # Run gdUnit4 tests if gdUnit4 is installed
-just fmt               # Format GDScript outside addons/
-just lint              # Lint GDScript outside addons/
+just fmt               # Format project GDScript
+just lint              # Lint project GDScript
 just check             # Run formatting and lint checks
 just changelog         # Generate CHANGELOG.md with cocogitto
 just release v1.0.0    # Create an annotated tag and GitHub Release
