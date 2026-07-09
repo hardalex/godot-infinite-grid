@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.3 - 2026-07-09
+#### Features
+- (**grid**) add view-centered LOD fade - (0b308ec)
+#### Documentation
+- (**grid**) update infinite grid reference - (efbfa58)
+- (**readme**) update project documentation - (f110110)
+#### Tooling and Configuration
+- (**config**) update changelog scopes - (3614611)
+
+- - -
+
 ## v1.0.2 - 2026-07-09
 #### Bug Fixes
 - (**release**) use hyphenated addon zip name - (395699a)

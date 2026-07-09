@@ -23,6 +23,7 @@ scopes = [
     "examples",
     "physics",
     "render",
+    "readme",
     "ui",
     "input",
     "audio",
