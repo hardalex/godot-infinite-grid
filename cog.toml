@@ -27,7 +27,10 @@ scopes = [
     "input",
     "audio",
     "config",
+    "check",
     "debug",
+    "project",
+    "release",
     "draw",
 ]
 
