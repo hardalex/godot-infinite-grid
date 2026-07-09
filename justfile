@@ -128,7 +128,7 @@ changelog:
 # Release
 # --------------------------------------------------
 
-# Create and publish a GitHub release from an annotated tag, e.g. `just release v1.0.0`
+# Create and publish a GitHub release with an addon-only ZIP, e.g. `just release v1.0.0`
 release version:
   @set -e; \
   if [ -n "$(git status --porcelain)" ]; then \
@@ -136,6 +136,7 @@ release version:
     exit 1; \
   fi; \
   command -v gh >/dev/null 2>&1 || { echo "! gh is required to create a GitHub release" >&2; exit 1; }; \
+  command -v unzip >/dev/null 2>&1 || { echo "! unzip is required to validate the release ZIP" >&2; exit 1; }; \
   case "{{version}}" in \
     v[0-9]*.[0-9]*.[0-9]*) ;; \
     *) echo "! Version must look like v1.0.0" >&2; exit 1 ;; \
@@ -145,6 +146,16 @@ release version:
     exit 1; \
   fi; \
   just check; \
+  tmpdir=$(mktemp -d); \
+  trap 'rm -rf "${tmpdir}"' EXIT; \
+  asset="${tmpdir}/infinite_grid-{{version}}.zip"; \
+  git archive --format=zip --prefix=addons/infinite_grid/ --output "${asset}" HEAD:addons/infinite_grid; \
+  invalid=$(unzip -Z1 "${asset}" | grep -v '^addons/infinite_grid/' || true); \
+  if [ -n "${invalid}" ]; then \
+    echo "! Release ZIP contains paths outside addons/infinite_grid/" >&2; \
+    echo "${invalid}" >&2; \
+    exit 1; \
+  fi; \
   git tag -a "{{version}}" -m "Release {{version}}"; \
   git push origin "{{version}}"; \
-  gh release create "{{version}}" --title "{{version}}" --generate-notes
+  gh release create "{{version}}" "${asset}" --title "{{version}}" --generate-notes

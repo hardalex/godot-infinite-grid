@@ -26,7 +26,7 @@ just fmt               # Format project GDScript
 just lint              # Lint project GDScript
 just check             # Run formatting and lint checks
 just changelog         # Generate CHANGELOG.md with cocogitto
-just release v1.0.0    # Create an annotated tag and GitHub Release
+just release v1.0.0    # Create an annotated tag, addon ZIP, and GitHub Release
 ```
 
 ## Project structure
