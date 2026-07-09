@@ -20,6 +20,8 @@ const GRID_SHADER := preload("res://addons/infinite_grid/infinite_grid_3d.gdshad
     if _shader_material != null:
       _shader_material.set_shader_parameter("debug_lod_colors", debug_lod_colors)
 @export var enable_grazing_opacity := true
+@export var enable_lod_center_fade := true
+@export var lod_center_fade_line_count := 151.0
 @export var thin_line_color := Color(0.42, 0.42, 0.42, 0.45)
 @export var thick_line_color := Color(0.62, 0.62, 0.62, 0.65)
 
@@ -102,11 +104,14 @@ func _apply_shader_parameters() -> void:
   _apply_lod_range_parameters()
   _shader_material.set_shader_parameter("debug_lod_colors", debug_lod_colors)
   _shader_material.set_shader_parameter("enable_grazing_opacity", enable_grazing_opacity)
+  _shader_material.set_shader_parameter("enable_lod_center_fade", enable_lod_center_fade)
+  _shader_material.set_shader_parameter("lod_center_fade_line_count", lod_center_fade_line_count)
   _shader_material.set_shader_parameter("thin_line_color", thin_line_color)
   _shader_material.set_shader_parameter("thick_line_color", thick_line_color)
   _shader_material.set_shader_parameter("camera_lod_distance", _get_min_lod_cell_size())
   _shader_material.set_shader_parameter("camera_far_clip", grid_size)
   _shader_material.set_shader_parameter("camera_is_orthogonal", false)
+  _shader_material.set_shader_parameter("view_grid_center", Vector2(global_position.x, global_position.z))
 
 
 func _apply_lod_range_parameters() -> void:
@@ -131,10 +136,15 @@ func _update_camera_lod_distance(camera: Camera3D) -> void:
 
   var min_lod_cell_size := _get_min_lod_cell_size()
   var lod_distance := min_lod_cell_size
+  var camera_forward := -camera.global_transform.basis.z.normalized()
+  var view_grid_center := Vector2(camera.global_position.x, camera.global_position.z)
   if camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
     lod_distance = maxf(camera.size, min_lod_cell_size)
+    if absf(camera_forward.y) > 0.0001:
+      var ray_distance := (global_position.y - camera.global_position.y) / camera_forward.y
+      var focus_position := camera.global_position + camera_forward * ray_distance
+      view_grid_center = Vector2(focus_position.x, focus_position.z)
   else:
-    var camera_forward := -camera.global_transform.basis.z.normalized()
     var floor_normal := Vector3.UP
     var height := absf(camera.global_position.y - global_position.y)
     var view_floor_factor := absf(camera_forward.dot(floor_normal))
@@ -142,5 +152,8 @@ func _update_camera_lod_distance(camera: Camera3D) -> void:
 
     # Match Blender: use the view-to-ground distance when looking down, and gradually fall back to camera height near grazing angles to avoid LOD distance blowups.
     lod_distance = maxf(lerpf(ray_floor_distance, height, 1.0 - view_floor_factor), min_lod_cell_size)
+    var focus_position := camera.global_position + camera_forward * lod_distance
+    view_grid_center = Vector2(focus_position.x, focus_position.z)
 
   _shader_material.set_shader_parameter("camera_lod_distance", lod_distance)
+  _shader_material.set_shader_parameter("view_grid_center", view_grid_center)

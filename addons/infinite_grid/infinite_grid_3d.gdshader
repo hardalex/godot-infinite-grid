@@ -16,6 +16,9 @@ uniform float camera_far_clip = 2000.0;
 uniform bool camera_is_orthogonal = false;
 uniform bool debug_lod_colors = false;
 uniform bool enable_grazing_opacity = true;
+uniform bool enable_lod_center_fade = true;
+uniform float lod_center_fade_line_count = 151.0;
+uniform vec2 view_grid_center = vec2(0.0);
 uniform vec4 thin_line_color : source_color = vec4(0.42, 0.42, 0.42, 0.45);
 uniform vec4 thick_line_color : source_color = vec4(0.62, 0.62, 0.62, 0.65);
 
@@ -42,6 +45,22 @@ float grid_line_alpha(vec2 uv, float current_cell_size) {
 		distance_pixels
 	);
 	return max(coverage.x, coverage.y);
+}
+
+
+float lod_center_fade(vec2 uv, float current_cell_size) {
+	if (!enable_lod_center_fade) {
+		return 1.0;
+	}
+
+	float half_line_count = max(lod_center_fade_line_count * 0.5, 1.0);
+	vec2 snapped_center = round(view_grid_center / current_cell_size) * current_cell_size;
+	vec2 level_coord = (uv - snapped_center) / max(current_cell_size * half_line_count, 0.00001);
+	if (camera_is_orthogonal) {
+		float edge = 1.0 - min(1.0, dot(level_coord, level_coord));
+		return edge * edge;
+	}
+	return 1.0 - min(1.0, length(level_coord));
 }
 
 
@@ -76,9 +95,9 @@ void fragment() {
 	float lod1_cell_size = safe_cell_size * pow(10.0, lod1_power);
 	float lod2_cell_size = safe_cell_size * pow(10.0, lod2_power);
 
-	float lod0_alpha = grid_line_alpha(uv, lod0_cell_size) * (1.0 - lod_fade);
-	float lod1_alpha = grid_line_alpha(uv, lod1_cell_size);
-	float lod2_alpha = grid_line_alpha(uv, lod2_cell_size);
+	float lod0_alpha = grid_line_alpha(uv, lod0_cell_size) * lod_center_fade(uv, lod0_cell_size) * (1.0 - lod_fade);
+	float lod1_alpha = grid_line_alpha(uv, lod1_cell_size) * lod_center_fade(uv, lod1_cell_size);
+	float lod2_alpha = grid_line_alpha(uv, lod2_cell_size) * lod_center_fade(uv, lod2_cell_size);
 
 	// Prevent overlapping LOD layers from stacking alpha and causing brightness jumps.
 	float lod2_visible_alpha = lod2_alpha;
