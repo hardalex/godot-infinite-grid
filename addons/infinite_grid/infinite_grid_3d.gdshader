@@ -7,7 +7,6 @@ render_mode unshaded, blend_mix, depth_draw_always, cull_disabled, fog_disabled;
 
 uniform float grid_size = 2000.0;
 uniform float cell_size = 1.0;
-uniform float min_pixels_between_cells = 2.0;
 uniform float line_width_pixels = 1.0;
 uniform float min_lod_power = -3.0;
 uniform float max_lod_power = 4.0;

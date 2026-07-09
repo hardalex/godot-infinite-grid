@@ -10,20 +10,19 @@ const GRID_SHADER := preload("res://addons/infinite_grid/infinite_grid_3d.gdshad
 @export var follow_viewport_camera := true
 @export var grid_size := 2000.0
 @export var cell_size := 1.0
-@export var min_pixels_between_cells := 2.0
 @export var line_width_pixels := 1.0
 @export var lod_finer_levels := 3
 @export var lod_total_levels := 8
-@export var debug_lod_colors := false:
-  set(value):
-    debug_lod_colors = value
-    if _shader_material != null:
-      _shader_material.set_shader_parameter("debug_lod_colors", debug_lod_colors)
 @export var enable_grazing_opacity := true
 @export var enable_lod_center_fade := true
 @export var lod_center_fade_line_count := 151.0
 @export var thin_line_color := Color(0.42, 0.42, 0.42, 0.45)
 @export var thick_line_color := Color(0.62, 0.62, 0.62, 0.65)
+@export var debug_lod_colors := false:
+  set(value):
+    debug_lod_colors = value
+    if _shader_material != null:
+      _shader_material.set_shader_parameter("debug_lod_colors", debug_lod_colors)
 
 var _shader_material: ShaderMaterial
 
@@ -99,7 +98,6 @@ func _apply_shader_parameters() -> void:
 
   _shader_material.set_shader_parameter("grid_size", grid_size)
   _shader_material.set_shader_parameter("cell_size", cell_size)
-  _shader_material.set_shader_parameter("min_pixels_between_cells", min_pixels_between_cells)
   _shader_material.set_shader_parameter("line_width_pixels", line_width_pixels)
   _apply_lod_range_parameters()
   _shader_material.set_shader_parameter("debug_lod_colors", debug_lod_colors)

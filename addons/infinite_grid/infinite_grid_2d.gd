@@ -31,10 +31,6 @@ const GRID_SHADER := preload("res://addons/infinite_grid/infinite_grid_2d.gdshad
   set(value):
     lod_total_levels = maxi(value, 3)
     _apply_lod_range_parameters()
-@export var debug_lod_colors := false:
-  set(value):
-    debug_lod_colors = value
-    _set_shader_parameter(&"debug_lod_colors", debug_lod_colors)
 @export var thin_line_color := Color(0.30, 0.30, 0.30, 0.50):
   set(value):
     thin_line_color = value
@@ -43,6 +39,10 @@ const GRID_SHADER := preload("res://addons/infinite_grid/infinite_grid_2d.gdshad
   set(value):
     thick_line_color = value
     _set_shader_parameter(&"thick_line_color", thick_line_color)
+@export var debug_lod_colors := false:
+  set(value):
+    debug_lod_colors = value
+    _set_shader_parameter(&"debug_lod_colors", debug_lod_colors)
 
 var _shader_material: ShaderMaterial
 var _last_viewport_size := Vector2.ZERO
