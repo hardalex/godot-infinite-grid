@@ -53,7 +53,7 @@ build = { changelog_title = "Build System" }
 
 [changelog]
 path = "CHANGELOG.md"
-template = "docs/changelog.tera"
+template = "changelog.tera"
 authors = []
 
 [bump_profiles]

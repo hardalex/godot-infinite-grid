@@ -16,8 +16,8 @@ uniform float camera_far_clip = 2000.0;
 uniform bool camera_is_orthogonal = false;
 uniform bool debug_lod_colors = false;
 uniform bool enable_grazing_opacity = true;
-uniform vec4 thin_line_color : source_color = vec4(0.000000962615, 0.521708, 0.04350812, 0.5019608);
-uniform vec4 thick_line_color : source_color = vec4(0.45882353, 1.0, 0.45882353, 0.7019608);
+uniform vec4 thin_line_color : source_color = vec4(0.42, 0.42, 0.42, 0.45);
+uniform vec4 thick_line_color : source_color = vec4(0.62, 0.62, 0.62, 0.65);
 
 varying vec3 world_position;
 
