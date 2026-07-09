@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://addons/infinite_grid/examples/free_camera.gd" id="1"]
+[ext_resource type="Script" path="res://examples/free_camera.gd" id="1"]
 
 [node name="FreeCamera" type="Camera3D"]
 current = true

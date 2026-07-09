@@ -11,7 +11,7 @@ metadata={
 
 [deps]
 
-source_file="res://addons/infinite_grid/examples/logo-128.svg"
+source_file="res://examples/logo-128.svg"
 dest_files=["res://.godot/imported/logo-128.svg-fb59eb1786e3dd3fb960262f7e14bfe0.s3tc.ctex"]
 
 [params]

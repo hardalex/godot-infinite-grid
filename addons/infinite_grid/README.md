@@ -29,10 +29,10 @@ No plugin activation is required. Instance the provided scenes directly.
 
 ## Quick start
 
-Open one of the included example scenes:
+Instance one of the reusable scenes in your project:
 
-- `res://addons/infinite_grid/examples/scene-3d.tscn`
-- `res://addons/infinite_grid/examples/scene-2d.tscn`
+- `res://addons/infinite_grid/infinite_grid_3d.tscn`
+- `res://addons/infinite_grid/infinite_grid_2d.tscn`
 
 ## Usage
 
@@ -106,11 +106,6 @@ Useful exported properties:
 | `debug_lod_colors` | `false` | Show LOD layers as blue, green, and red. |
 | `thin_line_color` | gray | Color for minor grid lines. |
 | `thick_line_color` | gray | Color for major grid lines. |
-
-## Examples
-
-- `examples/scene-3d.tscn`: shows `InfiniteGrid3D` in a 3D scene with an editor-style free camera.
-- `examples/scene-2d.tscn`: shows `InfiniteGrid2D` in a 2D camera scene with pan and zoom controls.
 
 ## License
 

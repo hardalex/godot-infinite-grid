@@ -3,7 +3,7 @@ extends Node3D
 
 const DESIGN_WIDTH := 1280
 const DESIGN_HEIGHT := 720
-const FreeCameraScript := preload("res://addons/infinite_grid/examples/free_camera.gd")
+const FreeCameraScript := preload("res://examples/free_camera.gd")
 
 var _last_info_text := ""
 

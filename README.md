@@ -6,9 +6,18 @@ This repository is the development project for the `infinite_grid` addon. The ad
 
 ## Addon documentation
 
-For installation, quick start, usage, exported properties, and example controls, see the addon README:
+For installation, usage, and exported properties, see the addon README:
 
 - [`addons/infinite_grid/README.md`](addons/infinite_grid/README.md)
+
+## Examples
+
+- `examples/scene-3d.tscn`: shows `InfiniteGrid3D` in a 3D scene with an editor-style free camera.
+- `examples/scene-2d.tscn`: shows `InfiniteGrid2D` in a 2D camera scene with pan and zoom controls.
+
+## Release package
+
+GitHub release assets contain only `addons/infinite_grid/`. The repository examples are for development and are not included in the addon ZIP.
 
 ## Development
 
@@ -42,13 +51,14 @@ addons/
     infinite_grid_3d.tscn
     infinite_grid_3d.gd
     infinite_grid_3d.gdshader
-    examples/
-      free_camera.tscn
-      free_camera.gd
-      scene-2d.tscn
-      scene-2d.gd
-      scene-3d.tscn
-      scene-3d.gd
+examples/
+  free_camera.tscn
+  free_camera.gd
+  logo-128.svg
+  scene-2d.tscn
+  scene-2d.gd
+  scene-3d.tscn
+  scene-3d.gd
 project.godot
 ```
 

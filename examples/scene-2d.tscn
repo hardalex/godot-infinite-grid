@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://4mv24hmjln6a"]
 
-[ext_resource type="Script" uid="uid://c0bx52fukurxv" path="res://addons/infinite_grid/examples/scene-2d.gd" id="1"]
+[ext_resource type="Script" uid="uid://c0bx52fukurxv" path="res://examples/scene-2d.gd" id="1"]
 [ext_resource type="PackedScene" path="res://addons/infinite_grid/infinite_grid_2d.tscn" id="2"]
-[ext_resource type="Texture2D" uid="uid://b3a01134n5mrn" path="res://addons/infinite_grid/examples/logo-128.svg" id="3"]
+[ext_resource type="Texture2D" uid="uid://b3a01134n5mrn" path="res://examples/logo-128.svg" id="3"]
 
 [node name="InfiniteGrid2DExample" type="Node2D" unique_id=1304486454]
 script = ExtResource("1")
@@ -16,8 +16,6 @@ texture = ExtResource("3")
 layer = -200
 
 [node name="InfiniteGrid2D" parent="GridLayer" unique_id=461313038 instance=ExtResource("2")]
-thin_line_color = Color(1.8650666e-06, 0.4988526, 0.035289273, 0.5019608)
-thick_line_color = Color(0.41960785, 1, 0.41960785, 0.7019608)
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1243590999]
 layer = 100
