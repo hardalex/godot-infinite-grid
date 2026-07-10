@@ -17,6 +17,8 @@ uniform float camera_far_clip = 2000.0;
 uniform bool camera_is_orthogonal = false;
 uniform bool debug_lod_colors = false;
 uniform bool enable_grazing_opacity = true;
+uniform float grazing_fade_start_factor = 0.0;
+uniform float grazing_fade_end_factor = 1.0;
 uniform bool enable_stipple_discard = true;
 uniform bool enable_lod_center_fade = true;
 uniform float lod_center_fade_line_count = 151.0;
@@ -149,7 +151,17 @@ void fragment() {
 	if (enable_grazing_opacity) {
 		vec3 view_dir = normalize(CAMERA_POSITION_WORLD - world_position);
 		float view_floor_factor = abs(dot(view_dir, vec3(0.0, 1.0, 0.0)));
-		grazing_opacity = 1.0 - pow(1.0 - view_floor_factor, 3.0);
+		float grazing_start = min(grazing_fade_start_factor, grazing_fade_end_factor);
+		float grazing_end = max(grazing_fade_start_factor, grazing_fade_end_factor);
+		float grazing_progress = step(grazing_start, view_floor_factor);
+		if (grazing_end - grazing_start > 0.00001) {
+			grazing_progress = clamp(
+				(view_floor_factor - grazing_start) / (grazing_end - grazing_start),
+				0.0,
+				1.0
+			);
+		}
+		grazing_opacity = smoothstep(0.0, 1.0, grazing_progress);
 	}
 
 	// Fade near the camera far clip before the grid is clipped by depth.

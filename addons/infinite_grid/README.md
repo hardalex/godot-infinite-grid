@@ -133,6 +133,18 @@ Default: `true`
 
 Fades the floor grid at shallow viewing angles. This reduces long transparent trails when the camera looks almost parallel to the grid plane.
 
+#### `grazing_fade_start`
+
+Default: `0.0`
+
+Sets the viewing angle above the grid plane where grazing opacity starts. Fragments viewed below this angle are fully faded out.
+
+#### `grazing_fade_end`
+
+Default: `90.0`
+
+Sets the viewing angle above the grid plane where grazing opacity reaches full visibility. Use a narrower range such as `5.0` to `30.0` to restrict fading to shallow viewing angles.
+
 #### `enable_stipple_discard`
 
 Default: `true`

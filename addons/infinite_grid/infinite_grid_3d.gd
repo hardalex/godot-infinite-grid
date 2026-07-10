@@ -45,6 +45,14 @@ const GRID_SHADER := preload("res://addons/infinite_grid/infinite_grid_3d.gdshad
   set(value):
     enable_grazing_opacity = value
     _set_shader_parameter(&"enable_grazing_opacity", enable_grazing_opacity)
+@export_range(0.0, 90.0, 0.1, "degrees") var grazing_fade_start := 0.0:
+  set(value):
+    grazing_fade_start = clampf(value, 0.0, 90.0)
+    _apply_grazing_fade_parameters()
+@export_range(0.0, 90.0, 0.1, "degrees") var grazing_fade_end := 90.0:
+  set(value):
+    grazing_fade_end = clampf(value, 0.0, 90.0)
+    _apply_grazing_fade_parameters()
 @export var enable_stipple_discard := true:
   set(value):
     enable_stipple_discard = value
@@ -147,6 +155,7 @@ func _apply_shader_parameters() -> void:
   _apply_lod_range_parameters()
   _shader_material.set_shader_parameter("debug_lod_colors", debug_lod_colors)
   _shader_material.set_shader_parameter("enable_grazing_opacity", enable_grazing_opacity)
+  _apply_grazing_fade_parameters()
   _shader_material.set_shader_parameter("enable_stipple_discard", enable_stipple_discard)
   _shader_material.set_shader_parameter("enable_lod_center_fade", enable_lod_center_fade)
   _shader_material.set_shader_parameter("lod_center_fade_line_count", lod_center_fade_line_count)
@@ -170,6 +179,16 @@ func _apply_min_lod_distance_parameter() -> void:
     return
 
   _shader_material.set_shader_parameter("camera_lod_distance", _get_min_lod_cell_size())
+
+
+func _apply_grazing_fade_parameters() -> void:
+  if _shader_material == null:
+    return
+
+  var start_factor := sin(deg_to_rad(grazing_fade_start))
+  var end_factor := sin(deg_to_rad(grazing_fade_end))
+  _shader_material.set_shader_parameter("grazing_fade_start_factor", start_factor)
+  _shader_material.set_shader_parameter("grazing_fade_end_factor", end_factor)
 
 
 func _apply_lod_range_parameters() -> void:
