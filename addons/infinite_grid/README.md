@@ -66,6 +66,18 @@ Default: `2000.0`
 
 Controls the side length of the finite quad used to render the grid. The shader fades near the mesh bounds, so larger values increase the visible area before the edge fade appears.
 
+#### `edge_fade_start_ratio`
+
+Default: `0.0`
+
+Sets where the mesh edge fade begins as a ratio of half the grid size. The default starts fading at the grid center.
+
+#### `edge_fade_end_ratio`
+
+Default: `1.0`
+
+Sets where the mesh edge fade reaches zero opacity as a ratio of half the grid size. Keep this greater than `edge_fade_start_ratio`. For example, use `0.8` and `1.0` to fade only across the outer 20% of the grid radius.
+
 #### `cell_size`
 
 Default: `1.0`
@@ -120,6 +132,12 @@ Increase `lod_total_levels` when the grid needs to remain useful across a wider 
 Default: `true`
 
 Fades the floor grid at shallow viewing angles. This reduces long transparent trails when the camera looks almost parallel to the grid plane.
+
+#### `enable_stipple_discard`
+
+Default: `true`
+
+Converts line alpha below `0.1` into a screen-space stipple pattern. Disable it to use regular alpha blending throughout the fade.
 
 #### `enable_lod_center_fade`
 

@@ -8,21 +8,67 @@ extends MeshInstance3D
 const GRID_SHADER := preload("res://addons/infinite_grid/infinite_grid_3d.gdshader")
 
 @export var follow_viewport_camera := true
-@export var grid_size := 2000.0
-@export var cell_size := 1.0
-@export var line_width_pixels := 1.0
-@export var lod_finer_levels := 3
-@export var lod_total_levels := 8
-@export var enable_grazing_opacity := true
-@export var enable_lod_center_fade := true
-@export var lod_center_fade_line_count := 151.0
-@export var thin_line_color := Color(0.42, 0.42, 0.42, 0.45)
-@export var thick_line_color := Color(0.62, 0.62, 0.62, 0.65)
+@export var grid_size := 2000.0:
+  set(value):
+    grid_size = maxf(value, 1.0)
+    if is_node_ready():
+      _rebuild_mesh()
+    _set_shader_parameter(&"grid_size", grid_size)
+    _set_shader_parameter(&"camera_far_clip", grid_size)
+@export_range(0.0, 1.0, 0.01) var edge_fade_start_ratio := 0.0:
+  set(value):
+    edge_fade_start_ratio = clampf(value, 0.0, 1.0)
+    _set_shader_parameter(&"edge_fade_start_ratio", edge_fade_start_ratio)
+@export_range(0.0, 1.0, 0.01) var edge_fade_end_ratio := 1.0:
+  set(value):
+    edge_fade_end_ratio = clampf(value, 0.0, 1.0)
+    _set_shader_parameter(&"edge_fade_end_ratio", edge_fade_end_ratio)
+@export var cell_size := 1.0:
+  set(value):
+    cell_size = maxf(value, 0.0001)
+    _set_shader_parameter(&"cell_size", cell_size)
+    _apply_min_lod_distance_parameter()
+@export var line_width_pixels := 1.0:
+  set(value):
+    line_width_pixels = maxf(value, 0.25)
+    _set_shader_parameter(&"line_width_pixels", line_width_pixels)
+@export var lod_finer_levels := 3:
+  set(value):
+    lod_finer_levels = maxi(value, 0)
+    _apply_lod_range_parameters()
+    _apply_min_lod_distance_parameter()
+@export var lod_total_levels := 8:
+  set(value):
+    lod_total_levels = maxi(value, 3)
+    _apply_lod_range_parameters()
+@export var enable_grazing_opacity := true:
+  set(value):
+    enable_grazing_opacity = value
+    _set_shader_parameter(&"enable_grazing_opacity", enable_grazing_opacity)
+@export var enable_stipple_discard := true:
+  set(value):
+    enable_stipple_discard = value
+    _set_shader_parameter(&"enable_stipple_discard", enable_stipple_discard)
+@export var enable_lod_center_fade := true:
+  set(value):
+    enable_lod_center_fade = value
+    _set_shader_parameter(&"enable_lod_center_fade", enable_lod_center_fade)
+@export var lod_center_fade_line_count := 151.0:
+  set(value):
+    lod_center_fade_line_count = value
+    _set_shader_parameter(&"lod_center_fade_line_count", lod_center_fade_line_count)
+@export var thin_line_color := Color(0.42, 0.42, 0.42, 0.45):
+  set(value):
+    thin_line_color = value
+    _set_shader_parameter(&"thin_line_color", thin_line_color)
+@export var thick_line_color := Color(0.62, 0.62, 0.62, 0.65):
+  set(value):
+    thick_line_color = value
+    _set_shader_parameter(&"thick_line_color", thick_line_color)
 @export var debug_lod_colors := false:
   set(value):
     debug_lod_colors = value
-    if _shader_material != null:
-      _shader_material.set_shader_parameter("debug_lod_colors", debug_lod_colors)
+    _set_shader_parameter(&"debug_lod_colors", debug_lod_colors)
 
 var _shader_material: ShaderMaterial
 
@@ -49,14 +95,11 @@ func follow_camera(camera: Camera3D) -> void:
 
 
 func set_grid_size(value: float) -> void:
-  grid_size = maxf(value, 1.0)
-  _rebuild_mesh()
-  _apply_shader_parameters()
+  grid_size = value
 
 
 func set_cell_size(value: float) -> void:
-  cell_size = maxf(value, 0.0001)
-  _apply_shader_parameters()
+  cell_size = value
 
 
 func _rebuild_mesh() -> void:
@@ -97,11 +140,14 @@ func _apply_shader_parameters() -> void:
     return
 
   _shader_material.set_shader_parameter("grid_size", grid_size)
+  _shader_material.set_shader_parameter("edge_fade_start_ratio", edge_fade_start_ratio)
+  _shader_material.set_shader_parameter("edge_fade_end_ratio", edge_fade_end_ratio)
   _shader_material.set_shader_parameter("cell_size", cell_size)
   _shader_material.set_shader_parameter("line_width_pixels", line_width_pixels)
   _apply_lod_range_parameters()
   _shader_material.set_shader_parameter("debug_lod_colors", debug_lod_colors)
   _shader_material.set_shader_parameter("enable_grazing_opacity", enable_grazing_opacity)
+  _shader_material.set_shader_parameter("enable_stipple_discard", enable_stipple_discard)
   _shader_material.set_shader_parameter("enable_lod_center_fade", enable_lod_center_fade)
   _shader_material.set_shader_parameter("lod_center_fade_line_count", lod_center_fade_line_count)
   _shader_material.set_shader_parameter("thin_line_color", thin_line_color)
@@ -112,7 +158,24 @@ func _apply_shader_parameters() -> void:
   _shader_material.set_shader_parameter("view_grid_center", Vector2(global_position.x, global_position.z))
 
 
+func _set_shader_parameter(parameter_name: StringName, value: Variant) -> void:
+  if _shader_material == null:
+    return
+
+  _shader_material.set_shader_parameter(parameter_name, value)
+
+
+func _apply_min_lod_distance_parameter() -> void:
+  if _shader_material == null:
+    return
+
+  _shader_material.set_shader_parameter("camera_lod_distance", _get_min_lod_cell_size())
+
+
 func _apply_lod_range_parameters() -> void:
+  if _shader_material == null:
+    return
+
   var finer_levels := maxi(lod_finer_levels, 0)
   var total_levels := maxi(lod_total_levels, 3)
   var min_lod_power := -float(finer_levels)

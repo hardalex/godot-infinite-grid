@@ -6,6 +6,8 @@ render_mode unshaded, blend_mix, depth_draw_always, cull_disabled, fog_disabled;
 // decimal LOD layers, view/edge/far fades, and low-alpha stipple discard.
 
 uniform float grid_size = 2000.0;
+uniform float edge_fade_start_ratio = 0.0;
+uniform float edge_fade_end_ratio = 1.0;
 uniform float cell_size = 1.0;
 uniform float line_width_pixels = 1.0;
 uniform float min_lod_power = -3.0;
@@ -15,6 +17,7 @@ uniform float camera_far_clip = 2000.0;
 uniform bool camera_is_orthogonal = false;
 uniform bool debug_lod_colors = false;
 uniform bool enable_grazing_opacity = true;
+uniform bool enable_stipple_discard = true;
 uniform bool enable_lod_center_fade = true;
 uniform float lod_center_fade_line_count = 151.0;
 uniform vec2 view_grid_center = vec2(0.0);
@@ -129,9 +132,16 @@ void fragment() {
 	float half_grid_size = max(grid_size * 0.5, 0.00001);
 	vec2 grid_center = MODEL_MATRIX[3].xz;
 	vec2 normalized_grid_coord = (world_position.xz - grid_center) / half_grid_size;
-	float edge_opacity = 1.0 - min(1.0, length(normalized_grid_coord));
+	float edge_start = clamp(edge_fade_start_ratio, 0.0, 1.0);
+	float edge_end = max(clamp(edge_fade_end_ratio, 0.0, 1.0), edge_start + 0.00001);
+	float edge_progress = clamp(
+		(length(normalized_grid_coord) - edge_start) / (edge_end - edge_start),
+		0.0,
+		1.0
+	);
+	float edge_opacity = 1.0 - edge_progress;
 	if (camera_is_orthogonal) {
-		edge_opacity = pow(1.0 - min(1.0, dot(normalized_grid_coord, normalized_grid_coord)), 2.0);
+		edge_opacity = pow(1.0 - edge_progress * edge_progress, 2.0);
 	}
 
 	// Fade at grazing view angles to reduce distant transparent trails.
@@ -156,7 +166,7 @@ void fragment() {
 	vec2 dash_coord = uv / lod1_cell_size;
 	vec2 dash_distance_to_line = min(fract(dash_coord), 1.0 - fract(dash_coord));
 	float dash_axis = dash_distance_to_line.x < dash_distance_to_line.y ? FRAGCOORD.y : FRAGCOORD.x;
-	if (ALPHA < fade_start && ALPHA / fade_start < fract(dash_axis / dash_width)) {
+	if (enable_stipple_discard && ALPHA < fade_start && ALPHA / fade_start < fract(dash_axis / dash_width)) {
 		discard;
 	}
 
