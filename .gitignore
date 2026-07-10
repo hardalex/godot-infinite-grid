@@ -53,5 +53,8 @@ desktop.ini
 # GDScript transient files
 *.uid
 
+# Local documentation demo
+/examples/demo-3d.*
+
 # gdUnit4 test reports
 reports/
