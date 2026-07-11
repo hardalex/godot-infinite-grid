@@ -135,19 +135,19 @@ Fades the floor grid at shallow viewing angles. This reduces long transparent tr
 
 #### `grazing_fade_start`
 
-Default: `0.0`
+Default: `3.0`
 
 Sets the viewing angle above the grid plane where grazing opacity starts. Fragments viewed below this angle are fully faded out.
 
 #### `grazing_fade_end`
 
-Default: `90.0`
+Default: `20.0`
 
 Sets the viewing angle above the grid plane where grazing opacity reaches full visibility. Use a narrower range such as `5.0` to `30.0` to restrict fading to shallow viewing angles.
 
 #### `enable_stipple_discard`
 
-Default: `true`
+Default: `false`
 
 Converts line alpha below `0.1` into a screen-space stipple pattern. Disable it to use regular alpha blending throughout the fade.
 

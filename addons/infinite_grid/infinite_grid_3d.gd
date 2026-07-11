@@ -45,15 +45,15 @@ const GRID_SHADER := preload("res://addons/infinite_grid/infinite_grid_3d.gdshad
   set(value):
     enable_grazing_opacity = value
     _set_shader_parameter(&"enable_grazing_opacity", enable_grazing_opacity)
-@export_range(0.0, 90.0, 0.1, "degrees") var grazing_fade_start := 0.0:
+@export_range(0.0, 90.0, 0.1, "degrees") var grazing_fade_start := 3.0:
   set(value):
     grazing_fade_start = clampf(value, 0.0, 90.0)
     _apply_grazing_fade_parameters()
-@export_range(0.0, 90.0, 0.1, "degrees") var grazing_fade_end := 90.0:
+@export_range(0.0, 90.0, 0.1, "degrees") var grazing_fade_end := 20.0:
   set(value):
     grazing_fade_end = clampf(value, 0.0, 90.0)
     _apply_grazing_fade_parameters()
-@export var enable_stipple_discard := true:
+@export var enable_stipple_discard := false:
   set(value):
     enable_stipple_discard = value
     _set_shader_parameter(&"enable_stipple_discard", enable_stipple_discard)

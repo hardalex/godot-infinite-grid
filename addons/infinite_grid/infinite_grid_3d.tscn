@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c347shudmgc4c"]
 
-[ext_resource type="Script" path="res://addons/infinite_grid/infinite_grid_3d.gd" id="1"]
+[ext_resource type="Script" uid="uid://c8gb0xbebgkhn" path="res://addons/infinite_grid/infinite_grid_3d.gd" id="1"]
 
-[node name="InfiniteGrid3D" type="MeshInstance3D"]
+[node name="InfiniteGrid3D" type="MeshInstance3D" unique_id=1268388575]
 script = ExtResource("1")
