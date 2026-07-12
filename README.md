@@ -1,5 +1,7 @@
 # Godot Infinite Grid
 
+<img src="media/thumbnail.webp" alt="Thumbnail" width="800">
+
 Reusable infinite grid components for Godot 4.x.
 
 This repository is the development project for the `infinite_grid` addon. The addon provides shader-driven 2D and 3D grids that keep line widths stable in screen space, fade between LOD levels, and follow the active camera so the grid appears endless without generating large geometry.
@@ -12,6 +14,18 @@ This repository is the development project for the `infinite_grid` addon. The ad
 - Smooth decimal LOD transitions.
 - Configurable cell size, colors, opacity, and debug LOD colors.
 - No external runtime dependencies.
+
+## Screenshots
+
+<img src="media/feat-grid-3d.webp" alt="Grid 3D" width="600">
+
+<img src="media/feat-grid-2d.webp" alt="Grid 2D" width="600">
+
+<img src="media/feat-center-fadewebp.webp" alt="Center fade" width="600">
+
+<img src="media/feat-grazing-fade.webp" alt="Grazing fade" width="600">
+
+<img src="media/feat-debug-color.webp" alt="Debug colors" width="600">
 
 ## Getting started
 
