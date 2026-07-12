@@ -5,6 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://c347shudmgc4c" path="res://addons/infinite_grid/infinite_grid_3d.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://b3a01134n5mrn" path="res://examples/logo-128.svg" id="4_aqquj"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_cube"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cube"]
+albedo_color = Color(0, 0.59767914, 0.46180207, 1)
+
 [node name="InfiniteGridExample" type="Node3D" unique_id=1738472960]
 script = ExtResource("1")
 
@@ -17,10 +22,14 @@ transform = Transform3D(0.70710677, -0.35355338, 0.61237246, 0, 0.8660254, 0.5, 
 light_energy = 0.6
 
 [node name="InfiniteGrid3D" parent="." unique_id=605528562 instance=ExtResource("3")]
-enable_lod_center_fade = false
+
+[node name="Cube" type="MeshInstance3D" parent="." unique_id=2110000001]
+mesh = SubResource("BoxMesh_cube")
+surface_material_override/0 = SubResource("StandardMaterial3D_cube")
 
 [node name="Logo" type="Sprite3D" parent="." unique_id=1773538734]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 1, 0)
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 1.2665616, 0)
+visible = false
 texture = ExtResource("4_aqquj")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=511206701]

@@ -15,7 +15,7 @@ const GRID_SHADER := preload("res://addons/infinite_grid/infinite_grid_2d.gdshad
   set(value):
     cell_size = maxf(value, 0.0001)
     _set_shader_parameter(&"cell_size", cell_size)
-@export var min_pixels_between_cells := 3.0:
+@export var min_pixels_between_cells := 2.0:
   set(value):
     min_pixels_between_cells = maxf(value, 0.1)
     _set_shader_parameter(&"min_pixels_between_cells", min_pixels_between_cells)
