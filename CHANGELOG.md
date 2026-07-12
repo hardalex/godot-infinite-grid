@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.1.0 - 2026-07-12
+#### Features
+- (**examples**) add screenshot capture utility and media assets - (72ea91a)
+- (**grid**) add grazing fade angle controls - (7ded196)
+- (**grid**) add runtime fade controls - (45175ad)
+#### Documentation
+- (**release**) update changelog for v1.0.3 - (d3321fe)
+
+- - -
+
 ## v1.0.3 - 2026-07-09
 #### Features
 - (**grid**) add view-centered LOD fade - (0b308ec)
@@ -40,3 +50,5 @@
 - (**scene**) add endless grid example - (172e9fa)
 #### Documentation
 - add readme and mit license - (715fa57)
+
+
